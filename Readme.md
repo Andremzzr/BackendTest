@@ -12,7 +12,7 @@ The idea is to build a really simple competition webpage that encourages people 
 * You can use any language, framework or technology you want;
 
 
-## Project made with Nodejs, MongoDb, EJS:
+## Project made with Nodejs, MongoDb, EJS, BOOTSTRAP:
 * To run this project I recommend using nodemon
 * ``` npm init ```
 * ``` npm install ```
