@@ -13,7 +13,12 @@ The idea is to build a really simple competition webpage that encourages people 
 
 
 ## Project made with Nodejs, MongoDb, EJS:
-.env variables:
+* To run this project I recommend using nodemon
+* ``` npm init ```
+* ``` npm install ```
+<br>
+
+## .env variables:
 ```
 MONGO_URI
 EMAIL
