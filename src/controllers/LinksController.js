@@ -2,6 +2,7 @@ const User = require('../models/User');
 
 const {sendLink} = require('./EmailController');
 module.exports = {
+    
     getUserLink : async(req,res) => {
         const {userId} = req.params;
         const user = await User.findOne({_id : userId});
@@ -15,8 +16,10 @@ module.exports = {
         const {userHash} = req.params;
         const userComfirmed = await User.findOne({userHash: userHash});
         const emailLink = `http://localhost:5000/form/${userComfirmed.userHash}/signin`;
+        
         sendLink(emailLink,userComfirmed.email);
         res.redirect(`/link/generateLink/${userComfirmed._id}`);  
+        
         const userUpdated = await User.updateOne({userHash: userHash},{
             comfirmed : true
         })

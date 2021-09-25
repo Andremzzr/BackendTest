@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const {sendLink,sendRegistration} = require('./EmailController');
+const {sendRegistration} = require('./EmailController');
 
 String.prototype.hashCode = function() {
     var hash = 0;
@@ -86,7 +86,7 @@ module.exports = {
     sendUserToThirdPartyForm: async (req,res) => {
         const {userHash} = req.params;  
         const thirdParty = await User.findOne({userHash: userHash});
-        if(thirdParty != null){
+        if(thirdParty != null || thirdParty.comfirmed == true){
             console.log(thirdParty);
             res.render('thirdlink', {name:thirdParty.name, hash : userHash});
         }
