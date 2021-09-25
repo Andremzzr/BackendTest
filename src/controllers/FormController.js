@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const {sendLink} = require('./EmailController');
+const {sendLink,sendRegistration} = require('./EmailController');
 
 String.prototype.hashCode = function() {
     var hash = 0;
@@ -42,11 +42,7 @@ module.exports = {
         try {
             const user = await User.findOne({$or:[{phone : phone},{email: email}]});
             if(user == null){
-                if(!phone.startsWith('9')){
-                    res.redirect('/form/signin');
-                    return;
-                }
-                else if(haveNumber(name)){
+                if(haveNumber(name)){
                     res.redirect('/form/signin');
                     return;
                 }
@@ -61,14 +57,14 @@ module.exports = {
                     userHash: newLink
                 });
 
-                const linkToEmail = `localhost:5000/form/${newLink}/signin`;
+                const linkToEmail = `localhost:5000/link/register/${newLink}/`;
                 
                 newUser.save()
                 .then( user => {
                     console.log(user);
                     console.log(`User ${name} has entered into the competition;`);
-                    sendLink(linkToEmail,newUser.email);
-                    res.redirect(`/link/${user._id}`); 
+                    sendRegistration(linkToEmail,newUser.email);
+                    res.redirect(`/link/wait`); 
                 })
                 .catch(
                     err =>{
@@ -112,11 +108,7 @@ module.exports = {
             const thirdPartyUser = await User.findOne({userHash: thirdPartyHash});
 
             if(user == null){
-                if(!phone.startsWith('9')){
-                    res.redirect('/form/signin');
-                    return;
-                }
-                else if(haveNumber(name)){
+                if(haveNumber(name)){
                     res.redirect('/form/signin');
                     return;
                 }
@@ -132,20 +124,20 @@ module.exports = {
                     points: 1
                 });
 
-
+                const linkToEmail = `localhost:5000/link/register/${newHash}/`;
                 newUser.save()
                 .then(
                     user => {
                         console.log(user);
-                        sendLink(linkToEmail,newUser.email);
+                        sendRegistration(linkToEmail,newUser.email);
 
                         User.updateOne({userHash: thirdPartyHash},{
                             points : thirdPartyUser.points + 1
                         })
                         .then(newThirdPartyUser => {
-                            console.log(`${thirdPartyUser.name} points : ${newThirdPartyUser}`);
+                            console.log(`${thirdPartyUser.name} registred another user`);
                         });
-                        res.redirect(`/link/${user._id}`);
+                        res.redirect(`/link/wait`);
                     }
                 )
                 .catch(err => {
@@ -172,7 +164,7 @@ module.exports = {
             const date = `${dateArray[0]}/${dateArray[1]}`; 
             console.log(date);
             
-            if(date != '24/09'){
+            if(date != '25/09'){
                 res.render('leader', {players : false});
             }
             else{

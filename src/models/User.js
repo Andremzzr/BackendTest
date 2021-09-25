@@ -21,6 +21,10 @@ const UserSchema = new mongoose.Schema({
     userHash: {
         type: String,
         required: true
+    },
+    comfirmed: {
+        type: Boolean,
+        default : false
     }
 },{collection: 'user'});
 
