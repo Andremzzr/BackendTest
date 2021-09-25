@@ -36,5 +36,7 @@ EMAIL_PASSWORD
 
 ## Link routes: 
 ```
-/[userId]
+/generateLink/[userId]
+/register/[userHash]
+/wait
 ```
